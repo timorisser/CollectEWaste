@@ -1,6 +1,6 @@
 # CollectEWaste
 
-CollectEWaste is an online recycling and upcycling platform.
+CollectEWaste is an online up- and recycling platform.
 
 ## Information
 
