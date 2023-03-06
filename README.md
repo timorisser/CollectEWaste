@@ -1,11 +1,9 @@
-# Coll.E.W
+# CollectEWaste
 
-Coll.E.W is an online recycling and upcycling platform.
+CollectEWaste is an online recycling and upcycling platform.
 
-## Workflow
+## Information
 
-[This tutorial](https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow) explains our git workflow.
+For greater Detail please have a look at our wiki
 
-## Projectrules
-
-Containername: proj2223_collew_name
+[Wiki](https://github.com/timorisser/CollectEWaste/wiki/Rules)
