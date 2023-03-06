@@ -1,0 +1,40 @@
+h1 {
+    text-align: center;
+    font-size: max(3.5vw, 22px);
+    margin-top: 1em;
+    margin-bottom: 20px;
+    color: #027333;
+}
+
+h2 {
+    text-align: center;
+    font-size: max(2.1vw, 16px);
+    margin-top: 2em;
+    color: #027333;
+}
+
+.outer {
+    text-align: center;
+    // margin-top: 5em;
+    width: 100%;
+}
+
+.elektroschrott {
+    display: inline-block;
+    text-align: left;
+    // margin: 0 10% 0 0;
+    padding: 5%;
+}
+
+.wiederverwendung {
+    display: inline-block;
+    text-align: left;
+    // margin: 0 0 0 10%;
+    padding: 5%;
+}
+
+.info-text {
+    font-size: x-large;
+    // margin-top: 2.5em;
+}
+

@@ -1,0 +1,75 @@
+h1 {
+  text-align: center;
+  font-size: max(3.5vw, 22px);
+  margin-top: 1em;
+  margin-bottom: 20px;
+}
+
+h2 {
+  text-align: center;
+  font-size: max(2.1vw, 16px);
+  margin: 0.5em 0 0.5em 0;
+}
+
+p {
+  font-size: max(1.2vw, 12px);
+}
+
+.edit_img_button_div {
+  text-align: center; 
+  margin: -2em -5em 0 0;
+}
+
+.edit_profile_button {
+  position: fixed;
+  top: 6rem;
+  right: 1.5rem;
+}
+
+.responsive_button {
+  height: auto;
+  min-width: 90px;
+  font-size: max(1vw, 12px);
+}
+
+.button-row {
+  display: flex;
+  justify-content: center;
+  margin: 2em 0 2em 0;
+}
+
+.edit_input_div {
+  text-align: center;
+}
+
+.address_div {
+  //TODO center list
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+::ng-deep .colorstyle {
+  background-color: lightgray;
+  color: #e03d3d;
+}
+
+mat-list {
+  width: 50%;
+  min-width: 400px;
+}
+
+mat-form-field {
+  width: 22vw;
+  min-width: 250px;
+}
+
+ngx-avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+mat-error {
+  color: red;
+}

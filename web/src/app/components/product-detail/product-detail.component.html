@@ -1,0 +1,55 @@
+<div class="wrapper">
+  <div class="slider">
+    <app-image-slider [slides]="slides"></app-image-slider>
+  </div>
+  <div class="product-info">
+    <h1>Hersteller: <b>{{product.product.brand}}</b></h1>
+    <h1>Modell: <b>{{product.product.model}}</b></h1>
+    <h2>Kategorie: {{product.product.type}}</h2>
+    <p>
+      {{product.description}}
+    </p>
+    <div>
+      <h2>Eigentümer:</h2>
+      <div class="owner-info">
+        <div class="owner-avatar">
+          <ngx-avatar [src]="url" name="{{owner.firstname}} {{owner.lastname}}" value="50%" size="70" [round]="true">
+          </ngx-avatar>
+          <p>{{owner.firstname}} {{owner.lastname}}</p>
+        </div>
+        <div class="owner-contact">
+          <p>
+            Kontaktinformationen:
+            <b>{{owner.phonenumber}}</b>
+            <br>
+            <b>{{owner.email}}</b>
+          </p>
+        </div>
+      </div>
+    </div>
+    <button mat-stroked-button class="responsive_button" color="primary" *ngIf="!product.reservee"
+      (click)="goBack()">Zurück</button>
+    <button mat-raised-button class="responsive_button" color="primary" *ngIf="!product.reservee"
+      [disabled]="!selectedAppointmentId" (click)="reserveProduct()">Reservieren</button>
+  </div>
+  <div class="collect-appointment" *ngIf="product.reservee" style="clear: both;">
+    <h1><b>Abzuholen bei dieser Adresse:</b></h1>
+    <h2>{{ownerAddress.street}} {{ownerAddress.streetNumber}}, {{ownerAddress.state}} {{ownerAddress.postcode}}
+      {{ownerAddress.location}}</h2>
+    <button mat-raised-button class="responsive_button" color="primary" *ngIf="product.reservee" (click)="undoReservation()">Reservierung
+      abbrechen</button>
+    <button mat-stroked-button class="responsive_button" color="primary" *ngIf="product.reservee"
+      (click)="goBack()">Zurück</button>
+  </div>
+</div>
+<div class="appointment-group" *ngIf="!product.reservee">
+  <div class="select-appointment">
+    <mat-radio-group [(ngModel)]="selectedAppointmentId">
+      <mat-radio-button color="primary" class="radio-button-field" *ngFor="let appointment of appointments"
+        value="{{appointment.id}}">{{appointment.day}} {{appointment.startTime | slice:0:-3}} -
+        {{appointment.endTime |
+        slice:0:-3}}
+      </mat-radio-button>
+    </mat-radio-group>
+  </div>
+</div>

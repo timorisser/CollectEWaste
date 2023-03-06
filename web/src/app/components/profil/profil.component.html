@@ -1,0 +1,101 @@
+<button mat-stroked-button color="primary" class="edit_profile_button responsive_button" *ngIf="!edit"
+    (click)="editProfile()">
+    <mat-icon>edit</mat-icon>
+    Bearbeiten
+</button>
+<button mat-stroked-button color="accent" class="edit_profile_button responsive_button" *ngIf="edit"
+    (click)="deleteUser()">
+    <mat-icon>delete</mat-icon>
+    Konto löschen
+</button>
+<h1>Profil</h1>
+<ngx-avatar [src]="url" name="{{userService.user.firstname}} {{userService.user.lastname}}" value="50%" size="150"
+    [round]="true">
+</ngx-avatar>
+<!-- <img [src]="url"><br> -->
+<div class="edit_img_button_div" *ngIf="edit">
+    <input type="file" id="fileUpload" name="fileUpload" style="display: none;"
+        (change)="onFileSelected($event); onFileChange($event)" accept="image/*" #fileUpload>
+    <button mat-mini-fab type="submit" color="primary" (click)="openDialog($event)">
+        <!-- (click)="fileUpload.click()"-->
+        <mat-icon>edit</mat-icon>
+    </button>
+</div>
+<!-- <div style="position: absolute; top: 123px">
+    <image-cropper [imageChangedEvent]="imgChangeEvt" [maintainAspectRatio]="true" [aspectRatio]="4 / 4"
+        [resizeToWidth]="256" format="png" (imageCropped)="cropImg($event)" (imageLoaded)="imgLoad()"
+        (cropperReady)="initCropper()" (loadImageFailed)="imgFailed()" style="width: 25%">
+    </image-cropper>
+</div>
+<div>
+    <h6>Image Preview</h6>
+    <img [src]="cropImgPreview" />
+</div> -->
+<div *ngIf="!edit" style="text-align: center;">
+    <h2 *ngIf="userService.is_company === 'true'">{{userService.user.companyName}}</h2>
+    <h2>{{userService.user.firstname}} {{userService.user.lastname}}</h2>
+    <b>
+        <p>
+            {{userService.user.email}}
+        </p>
+        <p>
+            {{userService.user.phonenumber}}
+        </p>
+    </b>
+</div>
+<div class="edit_input_div" *ngIf="edit">
+    <form>
+        <h2 *ngIf="userService.is_company === 'true'">{{userService.user.companyName}}</h2>
+        <!-- <mat-form-field appearance="outline" *ngIf="userService.is_company === 'true'">
+            <mat-label>Firmenname</mat-label>
+            <input matInput [(ngModel)]="newCompany" name="company">
+        </mat-form-field> -->
+        <br>
+        <mat-form-field appearance="outline">
+            <mat-label>Vorname</mat-label>
+            <input matInput [(ngModel)]="newFirstname" name="firstname">
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="outline">
+            <mat-label>Nachname</mat-label>
+            <input matInput [(ngModel)]="newLastname" name="lastname">
+        </mat-form-field>
+        <br>
+        <!-- <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput [(ngModel)]="newEmail" [formControl]="authService.emailForm" name="email">
+            <mat-error *ngIf="authService.emailForm.invalid">{{authService.getErrorMessage()}}</mat-error>
+        </mat-form-field> -->
+        <p>
+            <b>{{userService.user.email}}</b>
+        </p>
+        <br>
+        <mat-form-field appearance="outline">
+            <mat-label>Telefonnummmer</mat-label>
+            <input matInput [(ngModel)]="newPhonenumber" name="phonenumber">
+        </mat-form-field>
+    </form>
+    <button mat-button color="primary" (click)="openDialogPasswordChange()">Passwort ändern!</button>
+    <br>
+</div>
+<div class="address_div">
+    <mat-list>
+        <div mat-subheader>Adressen</div>
+        <button mat-raised-button color="primary" class="responsive_button" (click)="toAddAddress()">Hinzufügen</button>
+        <mat-list-item *ngFor="let a of addresses">
+            <mat-icon mat-list-icon>location_on</mat-icon>
+            <div mat-line>{{a.state}}</div>
+            <div mat-line>{{a.street}} {{a.streetNumber}}, {{a.postcode}} {{a.location}}</div>
+            <button mat-icon-button (click)="deleteAddress(a.id!)">
+                <mat-icon>delete</mat-icon>
+            </button>
+            <mat-divider></mat-divider>
+        </mat-list-item>
+    </mat-list>
+</div>
+<div class="button-row" *ngIf="edit">
+    <button mat-button color="primary" class="responsive_button" (click)="cancel()">Abbrechen</button>
+    <button mat-raised-button color="primary" class="responsive_button" [disabled]="!checkChanges()"
+        (click)="saveChanges()">Änderungen
+        speichern</button>
+</div>

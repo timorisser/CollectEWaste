@@ -1,0 +1,69 @@
+<mat-card>
+    <div class="cardtitles">
+        <mat-card-title>Adresse hinzufügen</mat-card-title>
+        <mat-card-subtitle style="font-size: max(0.98vw, 14px);">
+            Füge dein Adresse hinzu!
+        </mat-card-subtitle>
+    </div>
+    <form #addressForm="ngForm">
+        <mat-card-content>
+            <mat-error *ngIf="!addressValid">
+                Bitte alles ausfüllen!
+            </mat-error>
+            <mat-form-field appearance="outline" class="state">
+                <mat-label>Bundesland</mat-label>
+                <mat-select [(value)]="address.state" required>
+                    <mat-option *ngFor="let state of states" [value]="state">
+                        {{state}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <br>
+            <mat-form-field appearance="outline" class="postcode">
+                <mat-label>PLZ</mat-label>
+                <input matInput type="number" min="1010" max="9992" minlength="4" maxlength= "4" [(ngModel)]="address.postcode" name="postcode" required>
+                <mat-error>
+                    Bitte eine Postleitzahl angeben!
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="location">
+                <mat-label>Ort</mat-label>
+                <input matInput [(ngModel)]="address.location" name="location" required>
+                <mat-error>
+                    Bitte einen Ort angeben!
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="street">
+                <mat-label>Straße</mat-label>
+                <input matInput [(ngModel)]="address.street" name="street" required>
+                <mat-error>
+                    Bitte eine Straße angeben!
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="streetnumber-stair-door">
+                <mat-label>Hausnr.</mat-label>
+                <input matInput type="number" min="0" [(ngModel)]="address.streetNumber" name="streetNumber" required>
+                <mat-error>
+                    Bitte eine Hausnummer angeben!
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="streetnumber-stair-door">
+                <mat-label>Stiege</mat-label>
+                <input matInput type="number" min="0" [(ngModel)]="address.stair" name="stair">
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="streetnumber-stair-door">
+                <mat-label>Tür</mat-label>
+                <input matInput type="number" min="0" [(ngModel)]="address.door" name="door">
+            </mat-form-field>
+            <br>
+
+        </mat-card-content>
+        <mat-card-actions style="margin: 0 1em 0 1em">
+            <div class="button-row">
+                <button mat-button color="primary" class="responsive_button" type="button" (click)="toProfile()">Abbrechen</button>
+                <button mat-raised-button color="primary" class="responsive_button"
+                    [disabled]="!addressForm.form.valid" (click)="toProfile(); addAddress()">Hinzufügen</button>
+            </div>
+        </mat-card-actions>
+    </form>
+</mat-card>

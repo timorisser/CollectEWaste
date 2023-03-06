@@ -1,0 +1,49 @@
+<mat-card>
+    <mat-card-title>
+        Anmeldung
+    </mat-card-title>
+    <form #loginForm="ngForm">
+        <mat-card-content>
+            <mat-error *ngIf="!loginValid">
+                Email und Passwort angeben!
+            </mat-error>
+            <mat-error *ngIf="clicked > 0">
+                Email oder Passwort falsch eingegeben!
+            </mat-error>
+            <mat-form-field appearance="fill">
+                <mat-label>Email</mat-label>
+                <input matInput [(ngModel)]="email" name="email" [formControl]="authService.emailForm" required>
+                <!-- <mat-error>
+                    Bitte Ihre Email eingeben!
+                </mat-error> -->
+                <mat-error *ngIf="authService.emailForm.invalid">{{authService.getErrorMessage()}}</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Passwort</mat-label>
+                <input matInput [type]="hide ? 'password' : 'text'" [(ngModel)]="password" name="password" required>
+                <button mat-icon-button type="button" matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </button>
+                <mat-error>
+                    Bitte Ihr Passwort eingeben!
+                </mat-error>
+            </mat-form-field>
+
+            <div class="link">
+                <a routerLink="#">Passwort vergessen?</a>
+            </div>
+        </mat-card-content>
+        <mat-card-actions style="margin: 0 0.5em 0 1em">
+            <div class="button-row">
+                <button mat-stroked-button color="primary" class="responsive_button" type="button" [matMenuTriggerFor]="aboveMenu">Konto
+                    erstellen</button>
+                <mat-menu #aboveMenu="matMenu" yPosition="below">
+                    <button mat-menu-item class="responsive_button" (click)="toRegister()">Privatkonto</button>
+                    <button mat-menu-item class="responsive_button" (click)="toCompanyRegister()">Firmenkonto</button>
+                </mat-menu>
+                <button mat-raised-button color="primary" class="responsive_button" [disabled]="!loginForm.form.valid"
+                    (click)="login(email, password)">Anmelden</button>
+            </div>
+        </mat-card-actions>
+    </form>
+</mat-card>

@@ -1,0 +1,94 @@
+<mat-card>
+    <div class="cardtitles">
+        <mat-card-title>Produkt hinzufügen</mat-card-title>
+        <mat-card-subtitle style="font-size: max(0.98vw, 14px);">
+            Füge ein neues Produkt hinzu!
+        </mat-card-subtitle>
+    </div>
+    <form #productForm="ngForm">
+        <mat-card-content>
+            <mat-error *ngIf="!productValid">
+                Bitte alles ausfüllen!
+            </mat-error>
+            <mat-form-field appearance="outline" class="type" name="type">
+                <mat-label>Kategorie</mat-label>
+                <mat-select [(value)]="productService.product.product.type" (selectionChange)="getBrands($event)" required>
+                    <mat-option *ngFor="let type of types" [value]="type">
+                        {{type}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <br>
+            <mat-form-field appearance="outline" class="brand_model" name="brand">
+                <mat-label>Marke</mat-label>
+                <mat-select [(value)]="productService.product.product.brand" (selectionChange)="getModels($event)" required>
+                    <mat-option *ngFor="let brand of brands" [value]="brand">
+                        {{brand}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <!-- <mat-form-field appearance="outline" class="brand_model">
+                <mat-label>Hersteller/Marke</mat-label>
+                <input matInput [(ngModel)]="productService.product.product.brand" name="brand" required>
+                <mat-error>
+                    Bitte einen Hersteller bzw. eine Marke angeben!
+                </mat-error>
+            </mat-form-field> -->
+            <mat-form-field appearance="outline" class="brand_model" name="model">
+                <mat-label>Modell</mat-label>
+                <mat-select [(value)]="productService.product.product.model" required>
+                    <mat-option *ngFor="let model of models" [value]="model">
+                        {{model}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <!-- <mat-form-field appearance="outline" class="brand_model">
+                <mat-label>Modell</mat-label>
+                <input matInput [(ngModel)]="productService.product.product.model" name="model" required>
+                <mat-error>
+                    Bitte eine Modell angeben!
+                </mat-error>
+            </mat-form-field> -->
+            <br>
+            <mat-form-field appearance="outline" class="description">
+                <mat-label>Beschreibung</mat-label>
+                <textarea matInput rows="2" [(ngModel)]="productService.product.description" name="description" required></textarea>
+                <mat-error>
+                    Bitte eine Beschreibung angeben!
+                </mat-error>
+            </mat-form-field>
+            <br>
+            <mat-form-field appearance="outline" class="address" name="address">
+                <mat-label>Abholadresse wählen</mat-label>
+                <mat-select [(value)]="address" (selectionChange)="isSchedulerEmpty()" required>
+                    <mat-option *ngFor="let address of addresses" [value]="address">
+                        {{address.street}} {{address.streetNumber}}, {{address.postcode}} {{address.location}}
+                    </mat-option>
+                </mat-select>
+                
+            </mat-form-field>
+            <mat-checkbox [disabled]="appointmentLength == 0" color="primary" [(ngModel)]="checked" style="margin-left: 10px;">Sind Ihre <span class="appointments" (click)="toScheduler()">Termine</span> aktuell?</mat-checkbox>
+            <mat-error *ngIf="addresses.length == 0">
+                Sie müssen eine Adresse in Ihrem <span class="profile" (click)="toProfile()">Benutzerprofil</span> hinzufügen!
+            </mat-error>
+            <mat-error *ngIf="appointmentLength == 0">
+                Sie müssen Abholtermine in Ihrem <span class="scheduler" (click)="toScheduler()">Terminplaner</span> hinzufügen
+            </mat-error>
+            <br>
+            <input type="file" id="multipleFileUpload" name="multipleFileUpload" (change)="onFilesSelect($event)" accept="image/*" style="display: none" multiple max="5" #multipleFileUpload>
+            <button mat-raised-button color="primary" (click)="multipleFileUpload.click()">Produktbilder hochladen</button>
+            <div *ngFor="let file of files">
+                {{file.name}}
+            </div>
+
+
+        </mat-card-content>
+        <mat-card-actions style="margin: 0 1em 0 1em">
+            <div class="button-row">
+                <button mat-button color="primary" class="responsive_button" type="button" (click)="goBack()">Abbrechen</button>
+                <button mat-raised-button color="primary" class="responsive_button"
+                    [disabled]="!(productForm.form.valid && files.length != 0 && checked)" (click)="addProduct()">Weiter</button>
+            </div>
+        </mat-card-actions>
+    </form>
+</mat-card>

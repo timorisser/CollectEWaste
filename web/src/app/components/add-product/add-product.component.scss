@@ -1,0 +1,88 @@
+mat-card {
+    width: 30vw;
+    min-width: 300px;
+    height: auto;
+    margin: 3em auto;
+    text-align: center;
+    padding-bottom: 2.5em;
+}
+
+mat-card-title {
+    font-size: max(2vw, 20px);
+    margin-top: 0.5em;
+    margin-bottom: 0.8em;
+}
+
+.responsive_button {
+    height: auto;
+    min-width: 90px;
+    font-size: max(1vw, 12px);
+}
+
+.cardtitles {
+    text-align: left;
+    margin-left: 1em;
+}
+
+.button-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.type {
+    width: fit-content;
+    font-size: 90%;
+}
+
+.brand_model {
+    width: 13vw;
+    min-width: 200px;
+    margin-left: 1em;
+    margin-right: 1em;
+    font-size: 90%;
+}
+
+.description {
+    width: 25vw;
+    min-width: 200px;
+    margin-left: 1em;
+    margin-right: 1em;
+    font-size: 90%;
+}
+
+.address {
+    width: fit-content;
+    font-size: 90%;
+}
+
+.appointments {
+    color: #0070C9;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.scheduler {
+    color: rgb(171, 0, 0);;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.profile {
+    color: rgb(171, 0, 0);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.appointments:hover {
+    color: #551A8B;
+}
+
+.scheduler:hover {
+    color: rgb(60, 0, 0);
+}
+
+.profile:hover {
+    color: rgb(60, 0, 0);
+}
+

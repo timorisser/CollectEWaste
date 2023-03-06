@@ -1,0 +1,48 @@
+mat-card {
+  width: 22vw;
+  min-width: 250px;
+  height: auto;
+  margin: 8em auto;
+  text-align: center;
+  padding-bottom: 2.5em;
+  padding-top: 2em;
+}
+
+mat-card-title {
+  font-size: max(2vw, 20px);
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+mat-form-field {
+  display: block;
+  margin-left: 1em;
+  margin-right: 1em;
+  font-size: 90%;
+}
+
+.responsive_button {
+  height: auto;
+  min-width: 90px;
+  font-size: max(1vw, 12px);
+}
+
+.button-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.link {
+  text-align: left;
+  margin-left: 1em;
+  font-size: max(0.8vw, 12px);
+}
+
+mat-error {
+  color: red;
+}
+
+::ng-deep .colorstyle {
+  background-color: lightgray;
+  color: #e03d3d;
+}

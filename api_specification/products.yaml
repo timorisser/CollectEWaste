@@ -1,0 +1,433 @@
+openapi: 3.0.3
+info:
+  title: Product Service
+  description: This service stores the products.
+  version: 1.0.0
+servers:
+  - url: 'https://www.example.com/api/v1'
+paths:
+  /product:
+    post:
+      summary: Create new product
+      operationId: createProduct
+      parameters:
+        - name: Authorization
+          in: header
+          description: Requires a valid token. This token can be created with Accounts microservice (accounts.yaml)
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductCreate"
+      responses:
+        201:
+          description: Response with a valid request. The field "distance" is always 0 in the response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        400:
+          description: When either the product doesn't exist or the location doesn't exist.
+        401:
+          description: When called without an token or when called with an invalid token.
+        500:
+          description: When either the server couldn't talk to the account microservice or when there are problems with the database.
+    get:
+      summary: Searches and filters products.
+      operationId: searchProducts
+      parameters:
+        - name: Authorization
+          in: header
+          description: Requires a valid token. This token can be created with Accounts microservice (accounts.yaml)
+          required: true
+          schema:
+            type: string
+        - name: state
+          in: query
+          description: "Which state the products should be: either 'available', 'reserved' or 'sold'"
+          example: available
+          schema:
+            type: string
+        - name: associativity
+          in: query
+          description: "How the product is associated with your account: either 'owner', 'reservee' or 'search' (for searching for available products)"
+          example: owner
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: How many items should be returned (max. 100 and default 100)
+          required: false
+          example: 100
+          schema:
+            type: integer
+        - name: brands
+          in: query
+          description: A list of brands that the user wants.
+          required: false
+          example: [Samsung, Huawei]
+          schema:
+            type: array
+            items:
+              type: string
+        - name: types
+          in: query
+          description: A list of product types that the user wants.
+          required: false
+          example: [Smartphone]
+          schema:
+            type: array
+            items:
+              type: string
+        - name: models
+          in: query
+          description: A list of product models that the user wants.
+          required: false
+          example: [MateBook D 15 202]
+          schema:
+            type: array
+            items:
+              type: string
+        - name: maxDistance
+          in: query
+          description: The maximum distance between the user and the product. In meters.
+          required: false
+          schema:
+            type: integer
+        - name: location
+          in: query
+          description: To set the position of a user. If this property and the property latitude are not set, it will use the main address of the caller. The coordinates need to be in WGS 84 (EPSG 4326) and need to be send in a 2 length array.
+          required: false
+          example: [42, 20]
+          schema:
+            type: array
+            items:
+              type: number
+        - name: afterId
+          in: query
+          description: When wanting to access items after the first request, pass the id of the last item in the last request to the subsequent requests.
+          required: false
+          example: 10003
+          schema:
+            type: integer
+        - name: afterDistance
+          in: query
+          description: When wanting to access items after the first request, pass the distance of the last item in the last request to the subsequent requests. (this is only required when sorting by distance)
+        - name: orderBy
+          in: query
+          description: "To change the ordering of products. There are only two ways of ordering: by time (\"time\") and by distance (\"distance\"). The default is by distance."
+          required: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: Response with valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Products"
+        400:
+          description: When ordering with distance and only one after paramter is set.
+        401:
+          description: When called without an token or when called with an invalid token.
+        403:
+          description: When called with an forbidden combination of state, associativity and if is a company. Non companies can only use the owner associativity. The search associativity only allows searching for available products. Products with the state available and associativity reservee can't exist.
+  /product/{product_id}:
+    get:
+      summary: Returns a product.
+      operationId: getProduct
+      parameters:
+        - name: Authorization
+          in: header
+          description: Requires a valid token from an company account. This token can be created with Accounts microservice (accounts.yaml)
+          required: true
+          schema:
+            type: string
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Response with a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        404:
+          description: When Product with this id doesn't exist.
+        401:
+          description: When called without an token or when called with an invalid token.
+        403:
+          description: When called with an token which is not from an company or from the user which created the product.
+    delete:
+      summary: Deletes a product.
+      operationId: deleteProduct
+      parameters:
+        - name: Authorization
+          in: header
+          description: Requires a valid token from an company account. This token can be created with Accounts microservice (accounts.yaml)
+          required: true
+          schema:
+            type: string
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Response with a valid request
+        404:
+          description: When Product with this id doesn't exist.
+        401:
+          description: When called without an token or when called with an invalid token.
+        403:
+          description: When called with an token which is not from the user which created the product.
+  /product/{product_id}/reserve:
+    patch:
+      summary: Reserve a product for collecting.
+      operationId: reserveProduct
+      parameters:
+        - name: Authorization
+          in: header
+          description: Requires a valid token from an company account. This token can be created with Accounts microservice (accounts.yaml)
+          required: true
+          schema:
+            type: string
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: appointment
+          in: query
+          required: true
+          description: The appointment in which you want to collect the product.
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Response with a valid request
+        400:
+          description: When the appointment either doesn't exist or isn't for this location.
+        404:
+          description: When Product with this id doesn't exist.
+        401:
+          description: When called without an token or when called with an invalid token.
+        403:
+          description: When called with an token which is not from an company.
+        409:
+          description: When the product is already reserved.
+  /product/{product_id}/undoReservation:
+    patch:
+      summary: Undo Reservation to a product.
+      operationId: undoProductReservation
+      parameters:
+        - name: Authorization
+          in: header
+          description: Requires a valid token from an company account. This token can be created with Accounts microservice (accounts.yaml)
+          required: true
+          schema:
+            type: string
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Response with a valid request
+        404:
+          description: When Product with this id doesn't exist.
+        401:
+          description: When called without an token or when called with an invalid token.
+        403:
+          description: When called with an token which is not from an company.
+        409:
+          description: When you have not reserved the product, but try to undo the reservation.
+  /product/{product_id}/collect:
+    patch:
+      summary: When the company has collected the product.
+      operationId: collectProduct
+      parameters:
+        - name: Authorization
+          in: header
+          description: Requires a valid token from an company account. This token can be created with Accounts microservice (accounts.yaml)
+          required: true
+          schema:
+            type: string
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Response with a valid request
+        404:
+          description: When Product with this id doesn't exist.
+        401:
+          description: When called without an token or when called with an invalid token.
+        403:
+          description: When called with an token which is not from the company which reserved the product.
+        409:
+          description: When the product was already collected.
+  /product/filters/types:
+    get:
+      summary: To get all types of products.
+      operationId: filtersGetTypes
+      responses:
+        200:
+          description: When there wasn't a problem with the database.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /product/filters/brands:
+    get:
+      summary: To get all brands, filtered by types.
+      operationId: filtersGetBrands
+      parameters:
+        - name: types
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        200:
+          description: When there wasn't a problem with the database.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /product/filters/models:
+    get:
+      summary: To get all models, filtered by types and brands.
+      operationId: filtersGetModels
+      parameters:
+        - name: types
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: brands
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        200:
+          description: When there wasn't a problem with the database.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+components:
+  schemas:
+    ProductCreate:
+      required:
+        - title
+        - type
+        - brand
+        - model
+        - product
+        - location
+      properties:
+        title:
+          type: string
+          example: Mein altes iPhone
+        product:
+          type: object
+          properties:
+            type:
+              type: string
+              example: Smartphone
+            brand:
+              type: string
+              example: Apple
+            model:
+              type: string
+              example: iPhone 6s
+        location:
+          type: integer
+          example: 2
+    Product:
+      required:
+        - id
+        - description
+        - type
+        - brand
+        - model
+        - product
+        - location
+        - status
+        - distance
+        - owner
+      properties:
+        id:
+          type: integer
+          example: 9824601
+        description:
+          type: string
+          example: Mein altes iPhone
+        product:
+          type: object
+          properties:
+            type:
+              type: string
+              example: Smartphone
+            brand:
+              type: string
+              example: Apple
+            model:
+              type: string
+              example: iPhone 6s
+        location:
+          type: integer
+          example: 2
+        status:
+          type: string
+          description: "Can be one of these statuses: 'non-final', 'available', 'reserved', 'sold'. This will be 'available' when POSTed."
+          example: 'available'
+        reservee:
+          type: integer
+          description: "The user, which reserved the product. This might get converted to a boolean, for privacy reasons."
+          example: 128989
+        collect_appointment:
+          type: integer
+          description: "The appointment, on which the product will be/was collected."
+          example: 9720
+        distance:
+          type: integer
+          example: 900
+        owner:
+          type: integer
+          example: 108591
+    Products:
+      type: array
+      items:
+        $ref: "#/components/schemas/Product"
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []

@@ -1,0 +1,46 @@
+<h1>Verfügbarer Elektroschrott</h1>
+<div class="search">
+    <!-- <mat-form-field appearance="outline">
+        <mat-label>Suche</mat-label>
+        <mat-icon matPrefix color="primary">search</mat-icon>
+        <input matInput>
+    </mat-form-field>   -->
+    <!-- <mat-form-field appearance="outline">
+        <mat-label>Kategorie</mat-label>
+        <mat-select>
+            <mat-option *ngFor="let cat of categories" [value]="cat">
+                {{cat}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field> -->
+    <button mat-raised-button color="primary">
+        <mat-icon>filter_alt</mat-icon>
+        Filter
+    </button>
+    <button mat-raised-button color="primary" class="responsive_button" (click)="toAddProducts()">
+        <mat-icon>add</mat-icon>
+        Produkt hinzufügen
+    </button>
+</div>
+<mat-grid-list cols="3" rowHeight="650px">
+    <mat-grid-tile *ngFor="let p of productService.products">
+        <mat-card class="card">
+            <mat-card-header>
+                <!-- <div mat-card-avatar class="example-header-image"></div> -->
+                <mat-card-title>{{p.product.product.brand}} {{p.product.product.model}}</mat-card-title>
+                <mat-card-subtitle>Kategorie: {{p.product.product.type}}<br></mat-card-subtitle>
+            </mat-card-header>
+            <img mat-card-image (load)="resizeImage($event)" src="{{p.link}}">
+            <mat-card-content>
+                <p>
+                    {{p.product.description}} <br>
+                    Entfernung: {{p.product.distance}} km
+                </p>
+            </mat-card-content>
+            <mat-card-actions>
+                <!-- <button mat-stroked-button color="primary" style="margin: 0 0 0 0.5em;">Details</button> -->
+                <button mat-raised-button color="primary" style="float: right; margin: 0 1em 0 0;" (click)="toProductDetail(p.product.id!)">Details</button>
+            </mat-card-actions>
+        </mat-card>
+    </mat-grid-tile>
+</mat-grid-list>

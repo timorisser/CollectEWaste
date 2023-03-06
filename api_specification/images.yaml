@@ -1,0 +1,137 @@
+---
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:9090/api/v1
+  description: Image-API
+paths:
+  "/image/ProfileImage":
+    post:
+      summary: Upload ProductImage
+      tags:
+      - image-controller
+      operationId: uploadProfileImage
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                uid:
+                  type: number
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: object
+  "/image/ProductImage":
+    post:
+      summary: Upload ProductImage
+      tags:
+      - image-controller
+      operationId: uploadProductImage
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                pid:
+                  type: number
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: object
+  "/image/ProfileImage/{uid}":
+    get:
+      summary: Get ProductImage from specific user
+      tags:
+      - image-controller
+      operationId: getProfileImage
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: string
+    delete:
+      summary: Deletes ProductImage
+      tags:
+      - image-controller
+      operationId: deleteFile
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: string
+  "/image/ProductImage/{pid}":
+    get:
+      summary: Get all ProductImage from specif ProductImage
+      tags:
+      - image-controller
+      operationId: getProductImage
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  type: string
+    delete:
+      tags:
+      - image-controller
+      operationId: deleteProductImage
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: string
+components: {}

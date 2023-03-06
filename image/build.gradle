@@ -1,0 +1,44 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.7.5'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'org.asciidoctor.convert' version '1.5.8'
+}
+
+group = 'at.collew'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	set('snippetsDir', file("build/generated-snippets"))
+}
+
+dependencies {
+	implementation 'com.github.eliux:megacmd4j:1.6.2'
+	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+	implementation 'org.springframework.boot:spring-boot-starter-mustache'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.postgresql:postgresql'
+	implementation 'com.amazonaws:aws-java-sdk:1.11.837'
+	implementation 'org.projectlombok:lombok:1.18.24'
+	implementation 'com.googlecode.json-simple:json-simple:1.1'
+	implementation 'com.drewnoakes:metadata-extractor:2.7.2'
+	implementation 'org.imgscalr:imgscalr-lib:4.2'
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+}
+
+tasks.named('test') {
+	outputs.dir snippetsDir
+	useJUnitPlatform()
+}
+
+tasks.named('asciidoctor') {
+	inputs.dir snippetsDir
+	dependsOn test
+}

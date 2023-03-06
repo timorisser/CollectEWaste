@@ -1,0 +1,28 @@
+.address {
+    width: fit-content;
+    font-size: 90%;
+}
+
+h1 {
+    text-align: center;
+    font-size: max(3.5vw, 22px);
+    margin-top: 1em;
+    margin-bottom: 20px;
+    color: #027333;
+}
+
+.responsive_button {
+    height: auto;
+    min-width: 90px;
+    font-size: max(1vw, 12px);
+    margin-left: 10px;
+  }
+
+.info {
+    color: red;
+    font-size: max(2vw, 16px);
+    text-align: center;
+    margin: 4em;
+    line-height: 1.5;
+}
+

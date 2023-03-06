@@ -1,0 +1,90 @@
+<mat-card>
+    <div class="cardtitles">
+        <mat-card-title>Firmenregistrierung</mat-card-title>
+        <mat-card-subtitle style="font-size: max(0.98vw, 14px);">
+            Erstelle dein Coll.E.W-Konto
+        </mat-card-subtitle>
+    </div>
+    <form #registerForm="ngForm">
+        <mat-card-content>
+            <mat-error *ngIf="!registerValid">
+                Bitte alles ausfüllen!
+            </mat-error>
+            <mat-form-field appearance="outline" style="width: 13vw;">
+                <mat-label>Firmenname</mat-label>
+                <input matInput [(ngModel)]="company" name="company" required>
+                <mat-error>
+                    Bitte Ihren Firmennamen angeben!
+                </mat-error>
+            </mat-form-field>
+            <br>
+            <mat-form-field appearance="outline">
+                <mat-label>Vorname</mat-label>
+                <input matInput [(ngModel)]="firstname" name="firstname" required>
+                <mat-error>
+                    Bitte Ihren Vornamen angeben!
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Nachname</mat-label>
+                <input matInput [(ngModel)]="lastname" name="lastname" required>
+                <mat-error>
+                    Bitte Ihren Nachnamen angeben!
+                </mat-error>
+            </mat-form-field>
+            <br>
+            <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" [(ngModel)]="email" name="email" [formControl]="authService.emailForm"
+                    required>
+                <!-- <mat-error *ngIf="validEmail">
+                    Bitte eine valide Email angeben!
+                </mat-error> -->
+                <!-- <mat-error *ngIf="!validEmail" style="color: red;">
+                    Keine gültige Email!
+                </mat-error> -->
+                <mat-error *ngIf="authService.emailForm.invalid">{{authService.getErrorMessage()}}</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Telefonnummer</mat-label>
+                <input matInput type="tel" [(ngModel)]="phonenumber" name="phonenumber" required>
+                <mat-error *ngIf="validPhonenumber">
+                    Bitte Ihre Telefonnummer angeben!
+                </mat-error>
+                <mat-error *ngIf="!validPhonenumber">
+                    Keine gültige Telefonnummer!
+                </mat-error>
+            </mat-form-field>
+            <br>
+            <mat-form-field appearance="outline">
+                <mat-label>Passwort</mat-label>
+                <input matInput [type]="hide1 ? 'password' : 'text'" [(ngModel)]="password" name="password" required>
+                <button mat-icon-button type="button" matSuffix (click)="hide1 = !hide1" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide1">
+                    <mat-icon>{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </button>
+                <mat-error>
+                    Bitte ein Passwort angeben!
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Passwort bestätigen</mat-label>
+                <input matInput [type]="hide2 ? 'password' : 'text'" [(ngModel)]="confirmPassword" name="confirmPassword" required>
+                <button mat-icon-button type="button" matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide2">
+                    <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </button>
+                <mat-error>
+                    Passwörter nicht gleich!
+                </mat-error>
+            </mat-form-field>
+            <br>
+
+        </mat-card-content>
+        <mat-card-actions style="margin: 0 1em 0 1em">
+            <div class="button-row">
+                <button mat-button color="primary" class="responsive_button" type="button" (click)="toLogin()">Stattdessen Anmelden</button>
+                <button mat-raised-button color="primary" class="responsive_button" [disabled]="!registerForm.form.valid"
+                    (click)="register()">Registrieren</button>
+            </div>
+        </mat-card-actions>
+    </form>
+</mat-card>

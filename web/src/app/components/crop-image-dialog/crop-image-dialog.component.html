@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>{{data.name}}</h1>
+<mat-dialog-content class="mat-typography">
+    <label><span class="label">{{data.instruction}}</span></label>
+
+    <div>
+        <input type="file" id="fileUpload" name="fileUpload" style="display: none;" (change)="fileChangeEvent($event);"
+            accept="image/*" #fileUpload>
+        <button mat-raised-button type="submit" color="primary" (click)="fileUpload.click()">Durchsuchen</button>
+        <!-- <input type="file" (change)="fileChangeEvent($event)" /> -->
+        <image-cropper [imageChangedEvent]="imgChangeEvt" [maintainAspectRatio]="true" [aspectRatio]="4 / 4"
+            [resizeToWidth]="256" format="png" (imageCropped)="cropImg($event)" (imageLoaded)="imgLoad()"
+            (cropperReady)="initCropper()" (loadImageFailed)="imgFailed()" style="width: 100%">
+        </image-cropper>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end" style="position: relative;">
+    <button mat-button color="primary" (click)="onNoClick()">Abbrechen</button>
+    <button mat-button color="primary" [mat-dialog-close]="croppedImage" cdkFocusInitial>Bestätigen</button>
+</mat-dialog-actions>

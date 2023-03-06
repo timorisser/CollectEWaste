@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+<mat-toolbar class="nav" fixed>
+    <!-- <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" (click)="toHomepage()"
+        matTooltip="Home">
+        <mat-icon>home</mat-icon>
+    </button> -->
+    <img src="/assets/collew-logo.svg" alt="Coll.E.W-Logo" (click)="toHomepage()">
+    <span style="margin-left: 5px; font-size: max(1.5vw, 12px)">Coll.E.W</span>
+    <button mat-button color="primary" style="margin-left: 2em;" (click)="toHomepage()">HOME</button>
+    <button mat-button color="primary" *ngIf="authService.isAuth" (click)="toProductsOrAddProducts()">PRODUKTE</button>
+    <span class="example-spacer"></span>
+    <div *ngIf="authService.isAuth">
+        <button mat-icon-button class="example-icon" [matMenuTriggerFor]="menu" matTooltip="Menü">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="toProfil()">
+                <mat-icon>account_circle</mat-icon>
+                <span>Profil</span>
+            </button>
+            <button mat-menu-item (click)="toScheduler()">
+                <mat-icon>schedule</mat-icon>
+                <span>Terminplaner</span>
+            </button>
+            <button mat-menu-item (click)="toCart()">
+                <mat-icon>shopping_cart</mat-icon>
+                <span>Warenkorb</span>
+            </button>
+            <button mat-menu-item (click)="logout()">
+                <mat-icon>logout</mat-icon>
+                <span>Abmelden</span>
+            </button>
+        </mat-menu>
+    </div>
+    <div *ngIf="!authService.isAuth">
+        <button mat-icon-button class="example-icon" (click)="toLogin()" matTooltip="Login">
+            <mat-icon>login</mat-icon>
+        </button>
+    </div>
+</mat-toolbar>
+<body>
+<router-outlet></router-outlet>
+</body>
+<footer>
+    <mat-toolbar class="footer">
+        <div>
+            <span style="margin-right: 5em; font-size:max(1.2vw, 12px);">Email: CollectElectricWaste@gmail.com</span>
+            <span style="margin-left: 5em; font-size:max(1.2vw, 12px)">Tel.: 01 234 5678 9</span>
+        </div>
+    </mat-toolbar>
+</footer>

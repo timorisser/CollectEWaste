@@ -1,0 +1,38 @@
+<!-- <mat-card>
+    <div class="cardtitles">
+        <mat-card-title>Produkt hinzufügen</mat-card-title>
+        <mat-card-subtitle style="font-size: max(0.98vw, 14px);">
+            Füge ein neues Produkt hinzu!
+        </mat-card-subtitle>
+    </div>
+    <form #locationAppointmentForm="ngForm">
+        <mat-card-content>
+            <mat-error *ngIf="!productValid">
+                Bitte alles ausfüllen!
+            </mat-error>
+            <mat-form-field appearance="outline" class="address" name="address">
+                <mat-label>Abholadresse wählen</mat-label>
+                <mat-select [(value)]="address" required>
+                    <mat-option *ngFor="let address of addresses" [value]="address">
+                        {{address.street}} {{address.streetNumber}}, {{address.postcode}} {{address.location}} 
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <br>
+            <div class="address_div">
+                    
+            </div>
+            <br>
+            
+
+
+        </mat-card-content>
+        <mat-card-actions style="margin: 0 1em 0 1em">
+            <div class="button-row">
+                <button mat-button color="primary" class="responsive_button" type="button" (click)="goBack()">Zurück</button>
+                <button mat-raised-button color="primary" class="responsive_button"
+                    [disabled]="!(locationAppointmentForm.form.valid && appointments.length != 0)" (click)="addProduct(); toProducts()">Hinzufügen</button>
+            </div>
+        </mat-card-actions>
+    </form>
+</mat-card> -->

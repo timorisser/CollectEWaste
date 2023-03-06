@@ -1,0 +1,52 @@
+<div class="scheduler">
+    <h1 mat-dialog-title>Füge zu einer Adresse einen Termin hinzu</h1>
+    <mat-dialog-content>
+        <form #schedulerForm="ngForm">
+            <mat-error *ngIf="!schedulerValid">
+                Bitte alles ausfüllen!
+            </mat-error>
+            <mat-form-field appearance="fill" class="address">
+                <mat-label>Adresse wählen</mat-label>
+                <mat-select [(value)]="address" name="address" required>
+                    <mat-option *ngFor="let address of addresses" [value]="address">
+                        {{address.street}} {{address.streetNumber}}, {{address.postcode}} {{address.location}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Wochentag wählen</mat-label>
+                <mat-select [(value)]="day" name="day" required>
+                    <mat-option *ngFor="let day of days" [value]="day">
+                        {{day}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <br>
+            <mat-form-field appearance="fill">
+                <mat-label>Von</mat-label>
+                <input matInput type="time" [(ngModel)]="startTime" name="startTime" required>
+                <!-- pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]" (input)="checkTime($event)" -->
+                <mat-error>
+                    {{errorText}}
+                </mat-error>
+            </mat-form-field>
+            <br>
+            <mat-form-field appearance="fill">
+                <mat-label>Bis</mat-label>
+                <input matInput type="time" [(ngModel)]="endTime" name="endTime" required>
+                <!--pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]" (input)="checkTime($event)"-->
+                <mat-error>
+                    {{errorText}}
+                </mat-error>
+            </mat-form-field>
+
+        </form>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-button color="primary" type="button" class="responsive_button"
+            (click)="onNoClick()">Abbrechen</button>
+        <button mat-button color="primary" class="responsive_button" [disabled]="!schedulerForm.form.valid"
+            [mat-dialog-close]="{day: day, startTime: startTime, endTime: endTime, address: address}"
+            cdkFocusInitial>Hinzufügen</button>
+    </mat-dialog-actions>
+</div>

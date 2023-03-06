@@ -1,0 +1,1293 @@
+openapi: 3.0.3
+info:
+  title: Account Api Documentation
+  description: Account Api Dokumentation
+  version: 4.0.0
+servers:
+  - url: 'https://example.com/api/v1/account'
+tags:
+  - name: user
+    description: user documentation
+  - name: user_location
+    description: user_location documentation
+  - name: appointment
+    description: appointment documentation
+paths:
+  /register:
+    post:
+      tags:
+        - user
+      summary: Registers user if not already registered
+      description: A not yet registered user can register himself/herself when he inputs the correct schema (firstname, lastname, etc..)
+      operationId: registerUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserDto"
+      responses:
+        200:
+          description: Response with valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        400:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User already exists
+        401:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Unauthorized
+        500:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal Server Error
+  /confirm:
+    get:
+      tags:
+        - user
+      summary: Confirms email of user who wants to register him/herself
+      description: user is redirected to this mapping, in an email that need to verify the users identity
+      operationId: confirmUser
+      parameters:
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: requires a valid authentication token mapped to the user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        400:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Token does not match RegisterToken
+        500:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal Server Error
+  /login:
+    post:
+      tags:
+        - user
+      summary: Logs user into system
+      description: If a user is registered he/she can login with the email and password
+      operationId: loginUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserDto"
+      responses:
+        200:
+          description: successful login into system
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        400:
+          description: bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Request was bad
+        401:
+          description: token may be not right
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User is not enabled
+        404:
+          description: user not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User does not exist, or is not activated
+        500:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal Server Error
+  /{user_id}:
+    get:
+      tags:
+        - user
+      security:
+        - bearerAuth: []
+      summary: Get user information
+      description: Get the user information with the user_id
+      operationId: getUser
+      parameters:
+        - name: user_id
+          in: path
+          description: user_id from user that wants to be fetched
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        400:
+          description: bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Request was bad
+        401:
+          description: token may be not right
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Tokenerror
+        404:
+          description: id not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: The id you sent was not found
+        500:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal Server Error
+  /:
+    get:
+      tags:
+        - user
+      security:
+        - bearerAuth: []
+      summary: get user
+      description: must be done while logged in, get user with own jwt token
+      operationId: getOwnUser
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        401:
+          description: token may be not right
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Tokenerror
+        500:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal Server Error
+    delete:
+      tags:
+        - user
+      security:
+        - bearerAuth: []
+      summary: delete user
+      description: must be done while logged in, softdelete user with own jwt token
+      operationId: deleteUser
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        400:
+          description: bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User is already disabled
+        401:
+          description: token may be not right
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Tokenerror
+        500:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal Server Error
+    patch:
+      tags:
+        - user
+      security:
+        - bearerAuth: []
+      summary: Update user
+      description: update possible to logged in user, can change data in profile
+      operationId: updateUser
+      requestBody:
+        description: Update an existent user
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangeInfoDto"
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        400:
+          description: bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User-ID is False
+        401:
+          description: token may be expired
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Token is expired
+        500:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal Server Error  
+  /changePassword:
+    patch:
+      tags:
+        - user
+      security:
+        - bearerAuth: []
+      summary: changes Password of logged in user
+      operationId: changePassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PasswordDto"
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        400:
+          description: bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Request was bad
+        401:
+          description: token may be not right
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Tokenerror
+        404:
+          description: User not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User not found
+        500:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal Server Error
+  /forgotPasswordEmail:
+    get:
+      tags:
+        - user
+      security:
+        - bearerAuth: []
+      summary: sends email to user who forgot email
+      operationId: forgotPasswordEmail
+      parameters:
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        400:
+          description: bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Request was bad
+        401:
+          description: token may be not right
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Tokenerror
+        404:
+          description: User not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User not found
+        500:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal Server Error
+  /forgotPassword:
+    patch:
+      tags:
+        - user
+      security:
+        - bearerAuth: []
+      summary: user can change password
+      description: if user should forget his/her password, the user gets an email with a redirect link, that he/she needs to follow to get on the change password site
+      operationId: forgotPassword
+      parameters:
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PasswordDto"
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        400:
+          description: bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Request was bad
+        401:
+          description: token may be not right
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Tokenerror
+        404:
+          description: User not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User not found
+        500:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal Server Error
+  /sendChangeEmail:
+    get:
+      tags:
+        - user
+      security:
+        - bearerAuth: []
+      summary: sends email to user who wants to change the email
+      operationId: sendChangeEmail
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        400:
+          description: bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Request was bad
+        401:
+          description: token may be not right
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Tokenerror
+        404:
+          description: User not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User not found
+        500:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal Server Error
+  /changeEmail:
+    patch:
+      tags:
+        - user
+      security:
+        - bearerAuth: []
+      summary: changes email
+      description: "we only need the email from the dto"
+      operationId: changeEmail
+      parameters:
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserDto"
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        400:
+          description: bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Request was bad
+        401:
+          description: token may be not right
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Tokenerror
+        404:
+          description: User not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User not found
+        500:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal Server Error
+  /location/{location_id}:
+    patch:
+      tags:
+        - user_location
+      security:
+        - bearerAuth: []
+      summary: change user location
+      description: we can change the user location after we are logged in
+      operationId: changeUserLocation
+      parameters:
+        - name: location_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LocationDto"
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LocationResponse"
+        400:
+          description: bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Request was bad
+        401:
+          description: token may be not right
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Tokenerror
+        404:
+          description: User not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User not found
+        500:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal Server Error
+    delete:
+      tags:
+        - user_location
+      security:
+        - bearerAuth: []
+      summary: delete location from user
+      description: delete user location to logged in account
+      operationId: deleteLocation
+      parameters:
+        - name: location_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LocationResponse"
+        400:
+          description: bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Request was bad
+        401:
+          description: token may be not right
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Tokenerror
+        404:
+          description: location id not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: id not found
+        500:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal Server Error
+    get:
+      tags:
+        - user_location
+      security:
+        - bearerAuth: []
+      summary: get location from user
+      description: get the location with specified user location
+      operationId: getLocation
+      parameters:
+        - name: location_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LocationResponse"
+        400:
+          description: bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Request was bad
+        401:
+          description: token may be not right
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Tokenerror
+        404:
+          description: location not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: id not found
+        500:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal Server Error
+  /location:
+    post:
+      tags:
+        - user_location
+      security:
+        - bearerAuth: []
+      summary: add new user location
+      description: add new user location to logged in account
+      operationId: addNewLocation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LocationDto"
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LocationResponse"
+        400:
+          description: bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Request was bad
+        401:
+          description: token may be not right
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Tokenerror
+        404:
+          description: location not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: id not found
+        500:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal Server Error
+    get:
+      tags:
+        - user_location
+      security:
+        - bearerAuth: []
+      summary: get every location from user
+      description: fetches every location that the user has saved
+      operationId: listLocations
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LocationResponse"
+        400:
+          description: bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Request was bad
+        401:
+          description: token may be not right
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Tokenerror
+        404:
+          description: locations not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: locations not found
+        500:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal Server Error
+  /appointment:
+    post:
+      tags:
+        - appointment
+      security:
+        - bearerAuth: []
+      summary: add appointment time
+      description: add appointment timeslots to user
+      operationId: addAppointment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AppointmentDto"
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppointmentResponse"
+        400:
+          description: bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Location already exists
+        401:
+          description: token may be not right
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Tokenerror
+        404:
+          description: Location is null
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Location is null
+        500:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal Server Error
+  /appointment/{appointment_id}:
+    get:
+      tags:
+        - appointment
+      security:
+        - bearerAuth: []
+      summary: get appointment
+      description: get the appointment timeslots with the respective appointment_id
+      operationId: getAppointment
+      parameters:
+        - name: appointment_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppointmentResponse"
+        400:
+          description: bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Location already exists
+        401:
+          description: token may be not right
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Tokenerror
+        404:
+          description: Location is null
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Location is null
+        500:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal Server Error
+    patch:
+      tags:
+        - appointment
+      security:
+        - bearerAuth: []
+      summary: update appointment
+      description: update the appointment timeslots
+      operationId: updateAppointment
+      parameters:
+        - name: appointment_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AppointmentDto"
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppointmentResponse"
+        400:
+          description: bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Location already exists
+        401:
+          description: token may be not right
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Tokenerror
+        404:
+          description: Location is null
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Location is null
+        500:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal Server Error
+    delete:
+      tags:
+        - appointment
+      security:
+        - bearerAuth: []
+      summary: delete appointment
+      description: delete the appointment timeslots
+      operationId: deleteAppointment
+      parameters:
+        - name: appointment_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppointmentResponse"
+        400:
+          description: bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: LocationID does not match
+        401:
+          description: token may be not right
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Tokenerror
+        404:
+          description: Location is null
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Location is null
+        500:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal Server Error
+  /appointment/loc/{userLocationId}:
+    get:
+      tags:
+        - appointment
+      security:
+        - bearerAuth: []
+      summary: get appointment from a location
+      description: get the appointment timeslots with the respective userLocationId
+      operationId: getAppointmentsfromLocation
+      parameters:
+        - name: userLocationId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppointmentResponse"
+        400:
+          description: bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Location already exists
+        401:
+          description: token may be not right
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Tokenerror
+        500:
+          description: Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Internal Server Error
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    User:
+      type: object
+      required:
+        - firstname
+        - lastname
+        - email
+        - phonenumber
+        - password
+        - is_company
+        - enabled
+      properties:
+        user_id:
+          type: integer
+          example: 1
+        firstname:
+          type: string
+          example: firstname
+        lastname:
+          type: string
+          example: lastname
+        email:
+          type: string
+          example: firstnamelastname@email.ru
+        phonenumber:
+          type: string
+          example: '123456890'
+        password:
+          type: string
+          example: 'strongpassword'
+        isCompany:
+          type: boolean
+          example: true
+        companyName:
+          type: string
+          example: companyname
+        register_token:
+          type: string
+          example: JWT
+        enabled:
+          type: boolean
+          example: false
+    UserDto:
+      type: object
+      properties:
+        firstname:
+          type: string
+          example: firstname
+        lastname:
+          type: string
+          example: lastname
+        email:
+          type: string
+          example: firstnamelastname@email.ru
+        phonenumber:
+          type: string
+          example: '123456890'
+        password:
+          type: string
+          example: 'strongpassword'
+        isCompany:
+          type: boolean
+          example: true
+        companyName:
+          type: string
+          example: companyname
+    PasswordDto:
+      type: object
+      properties:
+        newpassword:
+          type: string
+          example: newpassword
+        matchingpassword:
+          type: string
+          example: newpassword
+        oldpassword:
+          type: string
+          example: oldpassword  
+    UserResponse:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          example: 1
+        firstname:
+          type: string
+          example: firstname
+        lastname:
+          type: string
+          example: lastname
+        email:
+          type: string
+          example: firstnamelastname@email.ru
+        phonenumber:
+          type: string
+          example: '123456890'
+        companyName:
+          type: string
+          example: companyname
+        enabled:
+          type: boolean
+          example: true
+    ChangeInfoDto:
+      type: object
+      properties:
+        firstname:
+          type: string
+          example: firstname
+        lastname:
+          type: string
+          example: lastname
+        phonenumber:
+          type: string
+          example: "1234567890"
+    UserLocation:
+      type: object
+      required:
+        - location_id 
+        - user_id
+        - street
+        - street_number
+        - state
+        - postcode
+      properties:
+        location_id:
+          type: integer
+          example: 1
+        user_id:
+          type: integer
+          example: 12
+        street:
+          type: string
+          example: validstreet
+        street_number:
+          type: integer
+          example: 12
+        door:
+          type: integer
+          example: 1
+        stair:
+          type: integer
+          example: 23
+        state:
+          type: string
+          example: Oberösterreich
+        postcode:
+          type: integer
+          example: 1220
+    LocationDto:
+      type: object
+      properties:
+        location:
+          type: string
+          example: Wien
+        street:
+          type: string
+          example: validstreet
+        streetNumber:
+          type: integer
+          example: 12
+        door:
+          type: integer
+          example: 1
+        stair:
+          type: integer
+          example: 23
+        state:
+          type: string
+          example: Oberösterreich
+        postcode:
+          type: integer
+          example: 1220
+    LocationResponse:
+      type: object
+      properties:
+        location_id:
+          type: integer
+          example: 1
+        user_id:
+          type: integer
+          example: 12
+        location:
+          type: string
+          example: Wien
+        street:
+          type: string
+          example: validstreet
+        street_number:
+          type: integer
+          example: 12
+        door:
+          type: integer
+          example: 1
+        stair:
+          type: integer
+          example: 23
+        state:
+          type: string
+          example: Oberösterreich
+        postcode:
+          type: integer
+          example: 1220
+    AppointmentDto:
+      type: object
+      required:
+      - location_id
+      - start_time
+      - end_time
+      properties:
+        location_id:
+          type: integer
+          example: 12
+        day:
+          type: string
+          example: montag
+        startTime:
+          type: string
+          example: HH-mm-ss
+        endTime:
+          type: string
+          example: HH-mm-ss
+    AppointmentResponse:
+      type: object
+      properties:
+        appointment_id:
+          type: integer
+          example: 1
+        day:
+          type: string
+          example: Montag
+        startTime:
+          type: string
+          example: HH-mm-ss
+        endTime:
+          type: string
+          example: HH-mm-ss
+    LoginResponse:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          example: 1
+        email:
+          type: string
+          example: firstnamelastname@email.ru
+        isCompany:
+          type: boolean
+          example: true
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c

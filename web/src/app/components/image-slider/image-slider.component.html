@@ -1,0 +1,15 @@
+<div class="slider">
+    <div>
+        <div class="leftArrow" (click)="prevImg()">❰</div>
+        <div class="rightArrow" (click)="nextImg()">❱</div>
+    </div>
+    <div class="slide" [style.background-image]="'url(' + slides[currentIndex] + ')'">
+    </div>
+    <!-- <div class="slide">
+        <img [src]="slides[currentIndex]"  />
+      </div> -->
+    <div class="dotsContainer">
+        <div *ngFor="let slide of slides; let slideIndex = index" class="dot" (click)="changeSlide(slideIndex)"
+            [class.active]="slideIndex === currentIndex">●</div>
+    </div>
+</div>

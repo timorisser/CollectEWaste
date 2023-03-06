@@ -1,0 +1,30 @@
+<h1>Terminplaner</h1>
+<div *ngIf="addresses.length == 0" class="info">
+    <p>
+        Bevor Termine erstellt werden können, <br>
+        müssen Sie mindestens eine Addresse in Ihrem Benutzerprofil hinzugefügt haben!
+    </p>
+    <button mat-raised-button color="primary" class="responsive_button" (click)="toAddAddress()">Adresse
+        hinzufügen</button>
+</div>
+<div *ngIf="addresses.length != 0">
+    <button mat-raised-button color="primary" class="responsive_button"
+        (click)="openAppointmentDialog()">Hinzufügen</button>
+    <button mat-stroked-button color="primary" class="responsive_button" (click)="goBack()">Zurück</button>
+    <mat-list *ngFor="let address of addresses">
+        <div mat-subheader style="font-size: max(1vw, 16px);">{{address.street}} {{address.streetNumber}},
+            {{address.state}} {{address.postcode}}
+            {{address.location}}</div>
+        <mat-list-item *ngFor="let appointment of addressWithAppointments.get(address)">
+            <mat-icon mat-list-icon>schedule</mat-icon>
+            <div mat-line>{{appointment.day}} {{appointment.startTime | slice:0:-3}} - {{appointment.endTime |
+                slice:0:-3}}
+                <button mat-icon-button (click)="deleteAppointment(address, appointment.id!)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+    </mat-list>
+
+</div>

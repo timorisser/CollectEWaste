@@ -1,0 +1,50 @@
+h1 {
+    text-align: center;
+    font-size: max(3.5vw, 22px);
+    margin-top: 1em;
+    margin-bottom: 20px;
+    color: #027333;
+}
+
+h2 {
+    text-align: center;
+    font-size: max(2vw, 16px);
+    margin-top: 1em;
+    color: #027333;
+}
+
+h3 {
+    text-align: center;
+    font-size: max(1.5vw, 12px);
+    margin-top: 1em;
+    color: #027333;
+}
+
+.card {
+    max-width: 350px;
+    // margin-bottom: 5em;
+    // margin-top: 5em;
+}
+
+.example-header-image {
+    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover;
+}
+
+.filter {
+    text-align: center;
+    margin-top: 1em;
+}
+
+.responsive_button {
+    height: auto;
+    min-width: 90px;
+    font-size: max(1vw, 12px);
+    margin-left: 1em;
+  }
+
+mat-form-field {
+    margin-left: 1em;
+    margin-right: 1em;
+    font-size: 90%;
+}

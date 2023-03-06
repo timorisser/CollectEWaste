@@ -1,0 +1,259 @@
+// .wrapper {
+//     width: 80%;
+//     height: 400px;
+//     margin: 0 auto;
+// }
+
+// .slider {
+//     width: 500px;
+//     height: 348.8372px;
+//     float: left;
+//     margin: 1em 0 0 0;
+// }
+
+// .product-info {
+//     margin: 2em 0 0 20px;
+//     float: left;
+// }
+
+// .product-info button {
+//     float: right;
+// }
+
+// .owner-info {
+//     display: flex;
+//     // align-items: center;
+// }
+
+// .owner-avatar {
+//     //     // display: flex;
+//     //     align-items: center;
+//     margin-right: 20px;
+// }
+
+// .owner-contact {
+//     display: flex;
+//     flex-direction: column;
+// }
+
+// .appointment-group {
+//     width: 80%;
+//     margin: 1em auto 0;
+// }
+
+// .select-appointment {
+//     // display: flex;
+//     width: 650px;
+// }
+
+// .radio-button-field {
+//     padding: 10px;
+//     margin: 5px;
+//     background-color: lightgrey;
+//     border-radius: 10px;
+//     border: solid gray;
+// }
+
+// h1 {
+//     margin-bottom: 5px;
+// }
+
+// /* Media Queries */
+
+// @media only screen and (max-width: 768px) {
+//     .wrapper {
+//       display: flex;
+//       flex-wrap: wrap;
+//     }
+
+//     .slider {
+//       width: 100%;
+//       order: 2;
+//       margin-bottom: 20px;
+//     }
+
+//     .product-info {
+//       width: 100%;
+//       order: 3;
+//     }
+
+//     .owner-info {
+//       display: flex;
+//       flex-direction: column;
+//     }
+
+//     .owner-avatar {
+//       align-self: center;
+//       margin-bottom: 10px;
+//     }
+
+//     .owner-contact {
+//       display: flex;
+//       flex-direction: column;
+//       align-items: center;
+//     }
+
+//     .appointment-group {
+//       order: 4;
+//     }
+//   }
+
+//   @media only screen and (min-width: 769px) and (max-width: 1024px) {
+//     .wrapper {
+//       display: flex;
+//       flex-wrap: wrap;
+//       justify-content: space-between;
+//     }
+
+//     .slider {
+//       width: 48%;
+//       order: 1;
+//     }
+
+//     .product-info {
+//       width: 48%;
+//       order: 2;
+//     }
+
+//     .owner-info {
+//       display: flex;
+//       flex-direction: row;
+//     }
+
+//     .owner-avatar {
+//       align-self: flex-start;
+//       margin-right: 20px;
+//     }
+
+//     .owner-contact {
+//       display: flex;
+//       flex-direction: column;
+//       align-items: flex-start;
+//     }
+
+//     .appointment-group {
+//       order: 3;
+//     }
+//   }
+
+//   @media only screen and (min-width: 1025px) {
+//     .wrapper {
+//       display: flex;
+//       flex-wrap: wrap;
+//       justify-content: space-between;
+//     }
+
+//     .slider {
+//       width: 40%;
+//       order: 1;
+//     }
+
+//     .product-info {
+//       width: 58%;
+//       order: 2;
+//       margin-top: 0;
+//       margin-left: 2%;
+//     }
+
+//     .owner-info {
+//       display: flex;
+//       flex-direction: row;
+//     }
+
+//     .owner-avatar {
+//       align-self: flex-start;
+//       margin-right: 20px;
+//     }
+
+//     .owner-contact {
+//       display: flex;
+//       flex-direction: column;
+//       align-items: flex-start;
+//     }
+
+//     .appointment-group {
+//       order: 3;
+//       margin-top: 0;
+//       margin-left: 2%;
+//     }
+//   }
+.wrapper {
+    max-width: 80%;
+    height: auto;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.slider {
+    width: 100%;
+    max-width: 500px;
+    // height: auto;
+    margin: 1em 0;
+}
+
+.product-info {
+    flex: 1;
+    margin: 2em 0 0 20px;
+}
+
+.product-info button {
+    float: right;
+}
+
+.owner-info {
+    display: flex;
+    align-items: center;
+}
+
+.owner-avatar {
+    margin-right: 20px;
+    text-align: center;
+}
+
+.owner-contact {
+    display: flex;
+    flex-direction: column;
+}
+
+.appointment-group {
+    max-width: 80%;
+    // max-width: 650px;
+    margin: 1em auto 0;
+}
+
+.select-appointment {
+    width: 100%;
+    max-width: 650px;
+}
+
+.radio-button-field {
+    padding: 10px;
+    margin: 5px;
+    background-color: lightgrey;
+    border-radius: 10px;
+    border: solid gray;
+}
+
+h1 {
+    margin-bottom: 5px;
+}
+
+.collect-appointment {
+    text-align: center;
+    // margin-top: 5em;
+    margin: auto 0;
+}
+
+.collect-appointment h1 {
+    color: red;
+    font-size: 2vw;
+}
+
+.responsive_button {
+    height: auto;
+    min-width: 90px;
+    font-size: max(1vw, 12px);
+    margin-right: 10px;
+}

@@ -1,0 +1,96 @@
+# This compose file was made for frontend devs. It isn't really suitable for deployment.
+#
+# PORTS:
+#
+#   REST API:       8080
+#   Mailhog Web UI: 8025
+#
+# ENVIRONMENT VARIABLES:
+#
+#   DB_USER: database username (default: postgres)
+#   DB_PASSWORD: database password (default: 12345678)
+
+version: '3'
+
+networks:
+  proj2223_collew_microservice_network:
+    driver: bridge
+  proj2223_collew_mail_network:
+    driver: bridge
+
+volumes:
+  proj2223_collew_db_volume:
+
+services:
+  proj2223_collew_db:
+    image: "ghcr.io/pschadauer-tgm/proj2223_collew_db:main"
+    environment:
+      POSTGRES_USER: "${DB_USER:-postgres}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD:-12345678}"
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+      POSTGRES_INITDB_ARGS: "--auth-host=trust"
+    volumes:
+      - proj2223_collew_db_volume:/var/lib/postgresql/data/
+    networks:
+      - proj2223_collew_microservice_network
+    ports:
+      - "5432:5432"
+
+  proj2223_collew_mailhog:
+    image: "mailhog/mailhog"
+    ports:
+      - "8025:8025"
+    networks:
+      - proj2223_collew_mail_network
+
+  proj2223_collew_account:
+    image: "ghcr.io/pschadauer-tgm/proj2223_collew_account:main"
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: "jdbc:postgresql://proj2223_collew_db:5432/account"
+      DATABASE_USERNAME: "${DB_USER:-postgres}"
+      DATABASE_PASSWORD: "${DB_PASSWORD:-12345678}"
+      SMPT_HOST: "proj2223_collew_mailhog"
+      SMPT_PORT: "1025"
+      EMAIL_ADDRESS: "noreply@collew.at"
+    networks:
+      - proj2223_collew_microservice_network
+      - proj2223_collew_mail_network
+    depends_on:
+      - proj2223_collew_db
+      - proj2223_collew_mailhog
+    
+  proj2223_collew_products:
+    image: "ghcr.io/pschadauer-tgm/proj2223_collew_products:main"
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: "postgres://${DB_USER:-postgres}:${DB_PASSWORD:-12345678}@proj2223_collew_db:5432/products"
+      ACCOUNTS_URL: "http://proj2223_collew_account:8080"
+    networks:
+      - proj2223_collew_microservice_network
+    depends_on:
+      - proj2223_collew_db
+
+  proj2223_collew_frontend:
+    image: "ghcr.io/pschadauer-tgm/proj2223_collew_frontend:main"
+    networks:
+      - proj2223_collew_microservice_network
+    depends_on:
+      - proj2223_collew_account
+      - proj2223_collew_products
+    ports:
+      - "8080:8080"
+
+  proj2223_collew_image:
+    image: "ghcr.io/pschadauer-tgm/proj2223_collew_image:main"
+    restart: unless-stopped
+    # TODO
+    environment:
+      DB_URL: "jdbc:postgresql://proj2223_collew_db:5432/imagedb"
+      DB_USER: "${DB_USER:-postgres}"
+      DB_PASSWD: "${DB_PASSWORD:-12345678}"
+      ACCESS_KEY: "${ACCESS_KEY:-user}"
+      SECRET_KEY: "${SECRET_KEY:-key}"
+      BUCKET_NAME: "${BUCKET_NAME:-collew}"
+    networks:
+      - proj2223_collew_microservice_network

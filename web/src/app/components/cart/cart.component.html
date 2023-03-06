@@ -1,0 +1,102 @@
+<h1>Dein Warenkorb</h1>
+<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
+    <mat-tab label="Reservierte Produkte" *ngIf="userService.is_company === 'true'">
+        <div class="filter">
+            <button mat-raised-button color="primary" class="responsive_button">
+                <mat-icon>filter_alt</mat-icon>
+                Filter
+            </button>
+        </div>
+        <h3 *ngIf="reservedProducts.length == 0">Keine reservierten Produkte!</h3>
+        <mat-grid-list cols="3" rowHeight="600px" *ngIf="reservedProducts.length != 0">
+            <mat-grid-tile *ngFor="let product of reservedProducts">
+                <mat-card class="card">
+                    <mat-card-header>
+                        <div mat-card-avatar class="example-header-image"></div>
+                        <mat-card-title>{{product.product.brand}} {{product.product.model}}</mat-card-title>
+                        <mat-card-subtitle>Kategorie: {{product.product.type}}<br></mat-card-subtitle>
+                    </mat-card-header>
+                    <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+                        alt="Photo of a Shiba Inu">
+                    <mat-card-content>
+                        <p>
+                            {{product.description}} <br>
+                            Entfernung: {{product.distance}} km
+                        </p>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button mat-stroked-button color="primary" style="margin: 0 0 0 0.5em;">Details</button>
+                        <button mat-raised-button color="primary" style="float: right; margin: 0 1em 0 0;">Reservierung
+                            abbrechen</button>
+                    </mat-card-actions>
+                </mat-card>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </mat-tab>
+    <mat-tab label="Angebotene Produkte">
+        <div class="filter">
+            <button mat-raised-button color="primary" class="responsive_button">
+                <mat-icon>filter_alt</mat-icon>
+                Filter
+            </button>
+        </div>
+        <h3 *ngIf="offeredProducts.length == 0">Keine angebotenen Produkte!</h3>
+        <mat-grid-list cols="3" rowHeight="600px">
+            <mat-grid-tile *ngFor="let product of offeredProducts">
+                <mat-card class="card">
+                    <mat-card-header>
+                        <div mat-card-avatar class="example-header-image"></div>
+                        <mat-card-title>{{product.product.brand}} {{product.product.model}}</mat-card-title>
+                        <mat-card-subtitle>Kategorie: {{product.product.type}}<br></mat-card-subtitle>
+                    </mat-card-header>
+                    <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+                        alt="Photo of a Shiba Inu">
+                    <mat-card-content>
+                        <p>
+                            {{product.description}} <br>
+                            Entfernung: {{product.distance}} km
+                        </p>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <!-- <button mat-stroked-button color="primary" style="margin: 0 0 0 0.5em;">Details</button> -->
+                        <button mat-raised-button color="primary" style="float: right; margin: 0 1em 0 0;">Nicht mehr
+                            anbieten</button>
+                    </mat-card-actions>
+                </mat-card>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </mat-tab>
+    <mat-tab label="Abgeholte Produkte">
+        <div class="filter">
+            <button mat-raised-button color="primary" class="responsive_button">
+                <mat-icon>filter_alt</mat-icon>
+                Filter
+            </button>
+        </div>
+        <h3 *ngIf="offeredProducts.length == 0">Keine abgeholten Produkte!</h3>
+        <mat-grid-list cols="3" rowHeight="600px">
+            <mat-grid-tile *ngFor="let product of offeredProducts">
+                <mat-card class="card">
+                    <mat-card-header>
+                        <div mat-card-avatar class="example-header-image"></div>
+                        <mat-card-title>{{product.product.brand}} {{product.product.model}}</mat-card-title>
+                        <mat-card-subtitle>Kategorie: {{product.product.type}}<br></mat-card-subtitle>
+                    </mat-card-header>
+                    <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+                        alt="Photo of a Shiba Inu">
+                    <mat-card-content>
+                        <p>
+                            {{product.description}} <br>
+                            Entfernung: {{product.distance}} km
+                        </p>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <!-- <button mat-stroked-button color="primary" style="margin: 0 0 0 0.5em;">Details</button> -->
+                        <button mat-raised-button color="primary" style="float: right; margin: 0 1em 0 0;">Nicht mehr
+                            anbieten</button>
+                    </mat-card-actions>
+                </mat-card>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </mat-tab>
+</mat-tab-group>
