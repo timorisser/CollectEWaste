@@ -6,4 +6,4 @@ CollectEWaste is an online recycling and upcycling platform.
 
 For greater Detail please have a look at our wiki
 
-[Wiki](https://github.com/timorisser/CollectEWaste/wiki/Rules)
+[Wiki](https://github.com/timorisser/CollectEWaste/wiki)
