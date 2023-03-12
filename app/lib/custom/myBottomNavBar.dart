@@ -89,7 +89,6 @@ class MyBottomNavBar extends StatelessWidget {
       ),
     );
   }
-
   showLogoutDialog(BuildContext context) {
     return AlertDialog(
       title: Text("Abmelden"),

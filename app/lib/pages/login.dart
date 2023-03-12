@@ -17,6 +17,7 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
           fontFamily: 'OpenSans', primarySwatch: MyColors.getBDD9A0()),
       home: const LoginPage(),
