@@ -11,7 +11,7 @@ on:
 env:
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
-  IMAGE_NAME: timorisser/CollectEWaste/tree/main/products
+  IMAGE_NAME: timorisser/collectewaste/tree/main/products
 
 jobs:
   build:
