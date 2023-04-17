@@ -1,12 +1,11 @@
 name: Docker (Frontend)
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "main" ]
     paths:
       - "web/**"
-  schedule:
-    - cron: "20 4 10 * *" # At 04:20 on day-of-month 10.”
 
 env:
   REGISTRY: ghcr.io
