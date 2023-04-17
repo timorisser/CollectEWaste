@@ -11,7 +11,7 @@ on:
 env:
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
-  IMAGE_NAME: pschadauer-tgm/proj2223_collew_frontend
+  IMAGE_NAME: https://github.com/timorisser/CollectEWaste/tree/main/web
 
 jobs:
   build:
