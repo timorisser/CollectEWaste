@@ -51,7 +51,7 @@ class MyBottomNavBar extends StatelessWidget {
               IconButton(
                 tooltip: "Support öffnen",
                 onPressed: () =>
-                    Navigator.of(context).push(createRoute(Support())),
+                    Navigator.of(context).pushReplacement(createRoute(Support())),
                 icon: Icon(
                   Icons.info,
                   color:
@@ -74,7 +74,7 @@ class MyBottomNavBar extends StatelessWidget {
               IconButton(
                 tooltip: "Konto",
                 onPressed: () =>
-                    Navigator.of(context).push(createRoute(Profile())),
+                    Navigator.of(context).pushReplacement(createRoute(Profile())),
                 icon: Icon(
                   Icons.account_circle,
                   color:
@@ -107,7 +107,7 @@ class MyBottomNavBar extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            Navigator.of(context).push(createRoute(Login()));
+            Navigator.of(context).pushReplacement(createRoute(Login()));
           },
           child: const Text(
             "Ja",
