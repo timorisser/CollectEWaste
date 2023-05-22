@@ -23,7 +23,7 @@ volumes:
 
 services:
   proj2223_collew_db:
-    image: "ghcr.io/pschadauer-tgm/proj2223_collew_db:main"
+    image: "timorisser/CollectEWaste/tree/main/db"
     environment:
       POSTGRES_USER: "${DB_USER:-postgres}"
       POSTGRES_PASSWORD: "${DB_PASSWORD:-12345678}"
@@ -44,7 +44,7 @@ services:
       - proj2223_collew_mail_network
 
   proj2223_collew_account:
-    image: "ghcr.io/pschadauer-tgm/proj2223_collew_account:main"
+    image: "timorisser/CollectEWaste/tree/main/account"
     restart: unless-stopped
     environment:
       DATABASE_URL: "jdbc:postgresql://proj2223_collew_db:5432/account"
@@ -61,7 +61,7 @@ services:
       - proj2223_collew_mailhog
     
   proj2223_collew_products:
-    image: "ghcr.io/pschadauer-tgm/proj2223_collew_products:main"
+    image: "timorisser/collectewaste/tree/main/products"
     restart: unless-stopped
     environment:
       DATABASE_URL: "postgres://${DB_USER:-postgres}:${DB_PASSWORD:-12345678}@proj2223_collew_db:5432/products"
@@ -72,7 +72,7 @@ services:
       - proj2223_collew_db
 
   proj2223_collew_frontend:
-    image: "ghcr.io/pschadauer-tgm/proj2223_collew_frontend:main"
+    image: "timorisser/CollectEWaste/tree/main/web"
     networks:
       - proj2223_collew_microservice_network
     depends_on:
@@ -82,7 +82,7 @@ services:
       - "8080:8080"
 
   proj2223_collew_image:
-    image: "ghcr.io/pschadauer-tgm/proj2223_collew_image:main"
+    image: "timorisser/CollectEWaste/tree/main/image"
     restart: unless-stopped
     # TODO
     environment:
